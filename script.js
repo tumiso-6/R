@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     animatedSections.add(section);
                 } 
                 // When section goes OUT OF view (scrolling up)
-                else if (animatedSections.has(section)) {
+                else {
                     // Remove visible class to reset animation
                     section.classList.remove('visible');
                     animatedSections.delete(section);
@@ -63,32 +63,5 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionTitles.forEach(title => {
             observer.observe(title);
         });
-        
-        // Optional: Add scroll event listener for smooth reset
-        let isScrolling;
-        window.addEventListener('scroll', () => {
-            // Clear the timeout if it's already set
-            window.clearTimeout(isScrolling);
-            
-            // Set a timeout to check scroll direction after scrolling stops
-            isScrolling = setTimeout(() => {
-                // Check scroll position and reset if needed
-                checkAndResetAnimations();
-            }, 66); // 66ms = ~15fps
-        });
-        
-        // Function to check and reset animations based on scroll position
-        function checkAndResetAnimations() {
-            sectionTitles.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-                
-                // If section is not in viewport and was previously animated
-                if (!isVisible && section.classList.contains('visible')) {
-                    section.classList.remove('visible');
-                    animatedSections.delete(section);
-                }
-            });
-        }
     }
 });
